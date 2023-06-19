@@ -12,8 +12,11 @@ st.set_page_config(page_title="Cereal Production Dashboard", layout="wide")
 st.title("Cereal Production Dashboard")
 st.markdown("This dashboard visualizes cereal production data.")
 
-# Create a sidebar for selecting the country
+# Create a sidebar for selecting the country and chart display option
 selected_country = st.sidebar.selectbox("Select Country", data["Entity"].unique())
+chart_display_option = st.sidebar.radio(
+    "Chart Display Option", ["All Together", "Split by Metric"]
+)
 
 # Filter the data based on the selected country
 filtered_data = data[data["Entity"] == selected_country]
@@ -49,31 +52,64 @@ filtered_data["Population (historical estimates)"] = (
     ].values[0]
 )
 
-# Line chart with years on the x-axis and different lines for each metric
-fig, ax = plt.subplots(figsize=(10, 6))
+# Line chart(s) based on the chart display option
+if chart_display_option == "All Together":
+    # Single chart with all metrics together
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(
+        filtered_data["Year"],
+        filtered_data["Area harvested (hectares)"],
+        label="Area harvested",
+    )
+    ax.plot(
+        filtered_data["Year"], filtered_data["Production (tonnes)"], label="Production"
+    )
+    ax.plot(
+        filtered_data["Year"],
+        filtered_data["Yield (tonnes per hectare)"],
+        label="Yield",
+    )
+    ax.plot(
+        filtered_data["Year"],
+        filtered_data["Population (historical estimates)"],
+        label="Population",
+    )
 
-ax.plot(
-    filtered_data["Year"],
-    filtered_data["Area harvested (hectares)"],
-    label="Area harvested",
-)
-ax.plot(filtered_data["Year"], filtered_data["Production (tonnes)"], label="Production")
-ax.plot(
-    filtered_data["Year"], filtered_data["Yield (tonnes per hectare)"], label="Yield"
-)
-ax.plot(
-    filtered_data["Year"],
-    filtered_data["Population (historical estimates)"],
-    label="Population",
-)
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Relative Change")
+    ax.set_title(f"Data for {selected_country}")
+    ax.legend()
 
-ax.set_xlabel("Year")
-ax.set_ylabel("Relative Change")
-ax.set_title(f"Data for {selected_country}")
-ax.legend()
+    # Display the chart using Streamlit's native `pyplot` command
+    st.pyplot(fig)
+else:
+    # Split chart for each metric
+    fig, axs = plt.subplots(4, 1, figsize=(10, 20))
 
-# Display the chart using Streamlit's native `pyplot` command
-st.pyplot(fig)
+    axs[0].plot(filtered_data["Year"], filtered_data["Area harvested (hectares)"])
+    axs[0].set_ylabel("Relative Change")
+    axs[0].set_title("Area harvested")
+
+    axs[1].plot(filtered_data["Year"], filtered_data["Production (tonnes)"])
+    axs[1].set_ylabel("Relative Change")
+    axs[1].set_title("Production")
+
+    axs[2].plot(filtered_data["Year"], filtered_data["Yield (tonnes per hectare)"])
+    axs[2].set_ylabel("Relative Change")
+    axs[2].set_title("Yield")
+
+    axs[3].plot(
+        filtered_data["Year"], filtered_data["Population (historical estimates)"]
+    )
+    axs[3].set_xlabel("Year")
+    axs[3].set_ylabel("Relative Change")
+    axs[3].set_title("Population")
+
+    # Adjust spacing between subplots
+    fig.tight_layout()
+
+    # Display the charts using Streamlit's native `pyplot` command
+    st.pyplot(fig)
 
 # Show the data table
 st.subheader("Data Table")

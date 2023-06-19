@@ -6,14 +6,13 @@
         "request": "launch",
         "module": "streamlit",
         "env": {
-            "STREAMLIT_APP": "app.py",
+            "STREAMLIT_APP": "streamlit_app.py",
             "STREAMLIT_ENV": "development",
-            "AWS_PROFILE": "mega_root",
             "PYTHONPATH": "/bin",
         },
         "args": [
             "run",
-            "./app.py"
+            "./streamlit_app.py"
         ],
         "jinja": true
     }
