@@ -60,19 +60,25 @@ if chart_display_option == "All Together":
         filtered_data["Year"],
         filtered_data["Area harvested (hectares)"],
         label="Area harvested",
+        color="blue",
     )
     ax.plot(
-        filtered_data["Year"], filtered_data["Production (tonnes)"], label="Production"
+        filtered_data["Year"],
+        filtered_data["Production (tonnes)"],
+        label="Production",
+        color="orange",
     )
     ax.plot(
         filtered_data["Year"],
         filtered_data["Yield (tonnes per hectare)"],
         label="Yield",
+        color="green",
     )
     ax.plot(
         filtered_data["Year"],
         filtered_data["Population (historical estimates)"],
         label="Population",
+        color="red",
     )
 
     ax.set_xlabel("Year")
@@ -83,6 +89,90 @@ if chart_display_option == "All Together":
     # Display the chart using Streamlit's native `pyplot` command
     st.pyplot(fig)
 else:
+    # Split chart for each metric
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+    axs = axs.ravel()
+
+    axs[0].plot(
+        filtered_data["Year"], filtered_data["Area harvested (hectares)"], color="blue"
+    )
+    axs[0].set_xlabel("Year")
+    axs[0].set_ylabel("Relative Change")
+    axs[0].set_title("Area harvested")
+
+    axs[1].plot(
+        filtered_data["Year"], filtered_data["Production (tonnes)"], color="orange"
+    )
+    axs[1].set_xlabel("Year")
+    axs[1].set_ylabel("Relative Change")
+    axs[1].set_title("Production")
+
+    axs[2].plot(
+        filtered_data["Year"],
+        filtered_data["Yield (tonnes per hectare)"],
+        color="green",
+    )
+    axs[2].set_xlabel("Year")
+    axs[2].set_ylabel("Relative Change")
+    axs[2].set_title("Yield")
+
+    axs[3].plot(
+        filtered_data["Year"],
+        filtered_data["Population (historical estimates)"],
+        color="red",
+    )
+    axs[3].set_xlabel("Year")
+    axs[3].set_ylabel("Relative Change")
+    axs[3].set_title("Population")
+
+    # Adjust spacing between subplots
+    fig.tight_layout()
+
+    # Display the charts using Streamlit's native `pyplot` command
+    st.pyplot(fig)
+
+    # Split chart for each metric
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+    axs = axs.ravel()
+
+    axs[0].plot(
+        filtered_data["Year"], filtered_data["Area harvested (hectares)"], color="blue"
+    )
+    axs[0].set_xlabel("Year")
+    axs[0].set_ylabel("Relative Change")
+    axs[0].set_title("Area harvested")
+
+    axs[1].plot(
+        filtered_data["Year"], filtered_data["Production (tonnes)"], color="orange"
+    )
+    axs[1].set_xlabel("Year")
+    axs[1].set_ylabel("Relative Change")
+    axs[1].set_title("Production")
+
+    axs[2].plot(
+        filtered_data["Year"],
+        filtered_data["Yield (tonnes per hectare)"],
+        color="green",
+    )
+    axs[2].set_xlabel("Year")
+    axs[2].set_ylabel("Relative Change")
+    axs[2].set_title("Yield")
+
+    axs[3].plot(
+        filtered_data["Year"],
+        filtered_data["Population (historical estimates)"],
+        color="red",
+    )
+    axs[3].set_xlabel("Year")
+    axs[3].set_ylabel("Relative Change")
+    axs[3].set_title("Population")
+
+    # Adjust spacing between subplots
+    fig.tight_layout()
+
+    # Display the charts using Streamlit's native `pyplot` command
+    st.pyplot(fig)
+
     # Split chart for each metric
     fig, axs = plt.subplots(4, 1, figsize=(10, 20))
 
